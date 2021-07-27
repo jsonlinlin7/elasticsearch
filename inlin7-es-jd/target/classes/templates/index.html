@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>linlin7-ES搜索引擎</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+</head>
+
+<body class="pg">
+<div class="page" id="app">
+    <div id="mallPage" class=" mallist tmall- page-not-market ">
+
+        <!-- 头部搜索 -->
+        <div id="header" class=" header-list-app">
+            <div class="headerLayout">
+                <div class="headerCon ">
+                    <!-- Logo-->
+                    <h1 id="mallLogo">
+                        <img th:src="@{/images/0074.png}" alt="">
+                    </h1>
+
+                    <div class="header-extra">
+
+                        <!--搜索-->
+                        <div id="mallSearch" class="mall-search">
+                            <form name="searchTop" class="mallSearch-form clearfix">
+                                <fieldset>
+                                    <legend>搜索</legend>
+                                    <div class="mallSearch-input clearfix">
+                                        <div class="s-combobox" id="s-combobox-685">
+                                            <div class="s-combobox-input-wrap">
+                                                <input v-model="keyword" type="text" autocomplete="off" value="dd" id="mq"
+                                                       class="s-combobox-input" aria-haspopup="true">
+                                            </div>
+                                        </div>
+                                        <button type="submit" @click.prevent="searchKey" id="searchbtn">搜索</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                            <ul class="relKeyTop">j
+                                <li><a>java</a></li>
+                                <li><a>es</a></li>
+                                <li><a>jsoup</a></li>
+                                <li><a>springboot</a></li>
+                                <li><a>vue</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品详情页面 -->
+        <div id="content">
+            <div class="main">
+                <!-- 品牌分类 -->
+                <form class="navAttrsForm">
+                    <div class="attrs j_NavAttrs" style="display:block">
+                        <div class="brandAttr j_nav_brand">
+                            <div class="j_Brand attr">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- 商品详情 -->
+                <div class="view grid-nosku">
+
+                    <div class="product" v-for="result in results">
+                        <div class="product-iWrap">
+                            <!--商品封面-->
+                            <div class="productImg-wrap">
+                                <a class="productImg">
+                                    <img :src="result.img">
+                                </a>
+                            </div>
+                            <!--价格-->
+                            <p class="productPrice">
+                                <em>{{result.price}}</em>
+                            </p>
+                            <!--标题-->
+                            <p class="productTitle">
+                                <a v-html="result.title"></a>
+                            </p>
+                            <!-- 店铺名 -->
+                            <div class="productShop">
+                                <span>店铺： xxx </span>
+                            </div>
+                            <!-- 成交信息 -->
+                            <p class="productStatus">
+                                <span>月成交<em>xxx笔</em></span>
+                                <span>评价 <a>x</a></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--前端使用Vue，实现前后端分离 -->
+<!--前端渲染数据 vue + axios-->
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.19.2/axios.min.js"></script>
+<!--引入它们的依赖-->
+
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            keyword:'',  //搜索的关键字
+            results:[] //搜索的结果
+        },
+        methods:{
+            searchKey(){
+                let keyword = this.keyword;
+                console.log(keyword);
+                //对接后端的接口
+                axios.get('search/'+keyword+"/1/100").then(response=>{  //keyword 是显示展示的商品个数
+                    console.log(response.data);
+                    this.results = response.data; //绑定数据！
+                    //通过后端拿数据
+                })
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
